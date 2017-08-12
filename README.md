@@ -38,6 +38,6 @@ Run `docker-compose up -d`.
 
 Wait the initialization. You can access `docker logs boca` to monitor the progress of the init process.
 
-Access `http://locahost:80`.
+Access `http://locahost/boca`.
 
 
