@@ -1,22 +1,6 @@
 # VERSION 0.1
 
-FROM ubuntu:xenial
-
-RUN apt-get -y update
-RUN apt-get -y install tzdata locales software-properties-common python-software-properties
-RUN apt-get -y upgrade
-RUN echo "America/Sao_Paulo" > /etc/timezone; dpkg-reconfigure -f noninteractive tzdata
-RUN locale-gen en_US en_US.UTF-8 pt_BR.UTF-8
-RUN locale -a
-ENV LANGUAGE=pt_BR.UTF-8
-ENV LANG=pt_BR.UTF-8
-ENV LC_ALL=pt_BR.UTF-8
-RUN locale-gen pt_BR.UTF-8
-RUN DEBIAN_FRONTEND=noninteractive dpkg-reconfigure locales
-
-RUN add-apt-repository ppa:brunoribas/ppa-maratona
-RUN apt-get -y update
-RUN apt-get -y install maratona-boca
+FROM decomp/boca-base
 
 ENV APACHE_CONFDIR /etc/apache2
 ENV APACHE_ENVVARS $APACHE_CONFDIR/envvars
@@ -50,18 +34,15 @@ RUN a2dismod mpm_event && a2enmod mpm_prefork
 RUN set -ex \
 	&& . "$APACHE_ENVVARS" \
 	&& ln -sfT /dev/stderr "$APACHE_LOG_DIR/error.log" \
-&& ln -sfT /dev/stdout "$APACHE_LOG_DIR/access.log" \
+        && ln -sfT /dev/stdout "$APACHE_LOG_DIR/access.log" \
 	&& ln -sfT /dev/stdout "$APACHE_LOG_DIR/other_vhosts_access.log"
 
 
 # Add startup script to the container.
 COPY apache2-foreground /usr/local/bin/
-COPY init.sh /init.sh
+COPY startup.sh /startup.sh
 
 WORKDIR /var/www/boca
 
 EXPOSE 80
-
-# Execute the containers startup script which will start many processes/services
-CMD ["/bin/bash", "/init.sh"]
-
+CMD ["/bin/bash", "/startup.sh"]
