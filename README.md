@@ -1,6 +1,6 @@
 # docker-boca
 
-Container with Boca, an administration system to held programming contests (e.g. ACM-ICPC, Maratona de Programação da SBC).
+Container with [Boca](https://github.com/cassiopc/boca), an administration system to held programming contests (e.g. ACM-ICPC, Maratona de Programação da SBC).
 
 # docker-compose.yml
 
@@ -66,5 +66,7 @@ Run `docker-compose up -d`.
 Wait the initialization. You can access `docker logs boca` to monitor the progress of the init process.
 
 Access `http://locahost/boca`.
+
+For jail environment see https://github.com/thild/docker-boca-jail
 
 
